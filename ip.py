@@ -20,13 +20,13 @@ def main(page):
         current_folder = os.getcwd()
         yt = YouTube(url.value, on_progress_callback=update_progress_bar)
         video = yt.streams.get_audio_only("mp4")
-        video.download(output_path=current_folder)
+        video.download(output_path=download_folder)
 #boton de video ,proximamente scrollbar con mas opciones 
     def bt_clk(e):
         current_folder = os.getcwd()
         yt = YouTube(url.value, on_progress_callback=update_progress_bar)
         video = yt.streams.get_lowest_resolution()
-        video.download(output_path=current_folder)
+        video.download(output_path=download_folder)
 
     submit.on_click = bt_clk
     submitq.on_click = audio_clk
@@ -39,5 +39,9 @@ def main(page):
         ft.Row([submit, submitq]),
         progress_bar,  # Agrega la barra de carga a la interfaz,no funciona aun 
     )
+if os.name == "nt": # Windows
+    download_folder = os.path.join(os.getenv("USERPROFILE"), "Downloads")
+else: # Otros sistemas
+ download_folder = os.path.join(os.getenv("HOME"), "Downloads")
 #carga la app
 ft.app(target=main)
